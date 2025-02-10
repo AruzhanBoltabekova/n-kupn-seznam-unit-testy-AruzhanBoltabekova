@@ -1,0 +1,322 @@
+{
+	"info": {
+		"_postman_id": "d4444ad8-f76d-45dd-89bd-96c951cd716b",
+		"name": "Shopping List API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35094488"
+	},
+	"item": [
+		{
+			"name": "Get All Shopping Lists",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Shopping List",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Supermarket List\",\n  \"ownerId\": \"user123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Shopping List By ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists/16c08858-a041-4290-a0dc-db260345101a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists",
+						"16c08858-a041-4290-a0dc-db260345101a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invite User to Shopping List",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"user456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists/16c08858-a041-4290-a0dc-db260345101a/invite",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists",
+						"16c08858-a041-4290-a0dc-db260345101a",
+						"invite"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Item to Shopping List",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"itemName\": \"Milk\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists/16c08858-a041-4290-a0dc-db260345101a/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists",
+						"16c08858-a041-4290-a0dc-db260345101a",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Items in Shopping List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists/16c08858-a041-4290-a0dc-db260345101a/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists",
+						"16c08858-a041-4290-a0dc-db260345101a",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mark Item as Completed",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists/16c08858-a041-4290-a0dc-db260345101a/items/75eb1081-38ac-4703-84b3-bd89098634c1/complete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists",
+						"16c08858-a041-4290-a0dc-db260345101a",
+						"items",
+						"75eb1081-38ac-4703-84b3-bd89098634c1",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Shopping List View",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists/16c08858-a041-4290-a0dc-db260345101a/view?Content-Type=application/json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists",
+						"16c08858-a041-4290-a0dc-db260345101a",
+						"view"
+					],
+					"query": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Item from Shopping List",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists/16c08858-a041-4290-a0dc-db260345101a/items/75eb1081-38ac-4703-84b3-bd89098634c1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists",
+						"16c08858-a041-4290-a0dc-db260345101a",
+						"items",
+						"75eb1081-38ac-4703-84b3-bd89098634c1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Shopping List",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9001/api/shopping-lists/16c08858-a041-4290-a0dc-db260345101a?Content-Type=application/json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"api",
+						"shopping-lists",
+						"16c08858-a041-4290-a0dc-db260345101a"
+					],
+					"query": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
