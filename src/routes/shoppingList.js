@@ -13,5 +13,5 @@ router.post("/shopping-lists/:id/items", shoppingListController.addItemToShoppin
 router.delete("/shopping-lists/:id/items/:itemId", shoppingListController.removeItemFromShoppingList);
 router.patch("/shopping-lists/:id/items/:itemId/complete", shoppingListController.markItemAsCompleted);
 router.get("/shopping-lists/:id", shoppingListController.getShoppingListById);
-
+router.patch("/shopping-lists/:id", shoppingListController.updateShoppingList);
 module.exports = router;

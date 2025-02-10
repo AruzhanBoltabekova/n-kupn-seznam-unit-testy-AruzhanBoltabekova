@@ -1,0 +1,16 @@
+> nakupni-seznam-api@1.0.0 test
+> jest --detectOpenHandles --forceExit
+
+PASS  tests/shoppingList.test.js
+Shopping List API
+  ✓ should create a new shopping list (55 ms)
+  ✓ should get all shopping lists (5 ms)
+  ✓ should get a shopping list by ID (6 ms)
+  ✓ should update a shopping list (6 ms)
+  ✓ should delete a shopping list (8 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        0.405 s, estimated 1 s
+Ran all test suites.
