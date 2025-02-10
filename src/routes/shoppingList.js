@@ -1,28 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const shoppingListController = require("../controllers/shoppingListController");
-const authorize = require("../middlewares/authorize");
-const validate = require("../middlewares/validate");
 
-// Get all shopping lists the user has access to
-router.get("/", shoppingListController.getAllLists);
-
-// Create a new shopping list (only the owner can do this)
-router.post("/", authorize, validate, shoppingListController.createList);
-
-// Get details of a specific shopping list
-router.get("/:id", authorize, shoppingListController.getListById);
-
-// Delete a shopping list (only the owner can do this)
-router.delete("/:id", authorize, shoppingListController.deleteList);
-
-// Invite a user to a shopping list
-router.post("/:id/invite", authorize, shoppingListController.inviteUser);
-
-// Manage items in a shopping list
-router.get("/:id/items", authorize, shoppingListController.getItems);
-router.post("/:id/items", authorize, validate, shoppingListController.addItem);
-router.delete("/:id/items/:itemId", authorize, shoppingListController.removeItem);
-router.patch("/:id/items/:itemId/complete", authorize, shoppingListController.completeItem);
+// Endpoints
+router.get("/shopping-lists", shoppingListController.getShoppingLists);
+router.post("/shopping-lists", shoppingListController.createShoppingList);
+router.get("/shopping-lists/:id/view", shoppingListController.getShoppingListById);
+router.delete("/shopping-lists/:id", shoppingListController.deleteShoppingList);
+router.post("/shopping-lists/:id/invite", shoppingListController.inviteUserToShoppingList);
+router.get("/shopping-lists/:id/items", shoppingListController.getShoppingListItems);
+router.post("/shopping-lists/:id/items", shoppingListController.addItemToShoppingList);
+router.delete("/shopping-lists/:id/items/:itemId", shoppingListController.removeItemFromShoppingList);
+router.patch("/shopping-lists/:id/items/:itemId/complete", shoppingListController.markItemAsCompleted);
+router.get("/shopping-lists/:id", shoppingListController.getShoppingListById);
 
 module.exports = router;

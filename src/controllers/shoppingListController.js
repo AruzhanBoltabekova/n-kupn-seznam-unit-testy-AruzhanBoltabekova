@@ -1,72 +1,93 @@
 const { v4: uuidv4 } = require("uuid");
-const shoppingListDB = require("../data/shoppingList");
 
-// Get all shopping lists
-exports.getAllLists = (req, res) => {
-    res.json(shoppingListDB);
+const shoppingLists = []; // Temporary storage
+
+const getShoppingLists = (req, res) => {
+    res.json({ shoppingLists });
 };
 
-// Create a new shopping list
-exports.createList = (req, res) => {
-    const { name, ownerId } = req.body;
-    if (!name || !ownerId) {
-        return res.status(400).json({ error: "Missing required fields" });
+const createShoppingList = (req, res) => {
+    const { title, ownerId } = req.body;
+
+    if (!title || !ownerId) {
+        return res.status(400).json({ error: "Missing required fields: title, ownerId" });
     }
-    const newList = {
-        listId: uuidv4(),
-        name,
+
+    const newShoppingList = {
+        id: uuidv4(),
+        title,
         ownerId,
         members: [ownerId],
         items: []
     };
-    shoppingListDB.push(newList);
-    res.status(201).json(newList);
+
+    shoppingLists.push(newShoppingList);
+    res.status(201).json(newShoppingList);
 };
 
-// Get a specific shopping list by ID
-exports.getListById = (req, res) => {
-    const list = shoppingListDB.find(l => l.listId === req.params.id);
-    if (!list) return res.status(404).json({ error: "Shopping list not found" });
-    res.json(list);
+const getShoppingListById = (req, res) => {
+    const { id } = req.params;
+    const shoppingList = shoppingLists.find(list => list.id === id);
+
+    if (!shoppingList) {
+        return res.status(404).json({ error: "Shopping list not found" });
+    }
+
+    res.json(shoppingList);
 };
 
-// Delete a shopping list
-exports.deleteList = (req, res) => {
-    const index = shoppingListDB.findIndex(l => l.listId === req.params.id);
-    if (index === -1) return res.status(404).json({ error: "Shopping list not found" });
-    shoppingListDB.splice(index, 1);
+const deleteShoppingList = (req, res) => {
+    const { id } = req.params;
+    const index = shoppingLists.findIndex(list => list.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ error: "Shopping list not found" });
+    }
+
+    shoppingLists.splice(index, 1);
     res.json({ message: "Shopping list deleted successfully" });
 };
 
-// Invite a user to a shopping list
-exports.inviteUser = (req, res) => {
-    const list = shoppingListDB.find(l => l.listId === req.params.id);
-    if (!list) return res.status(404).json({ error: "Shopping list not found" });
-
+const inviteUserToShoppingList = (req, res) => {
+    const { id } = req.params;
     const { userId } = req.body;
+    const shoppingList = shoppingLists.find(list => list.id === id);
+
+    if (!shoppingList) {
+        return res.status(404).json({ error: "Shopping list not found" });
+    }
+
     if (!userId) {
         return res.status(400).json({ error: "User ID is required" });
     }
 
-    if (!list.members.includes(userId)) {
-        list.members.push(userId);
+    if (!shoppingList.members.includes(userId)) {
+        shoppingList.members.push(userId);
     }
-    res.json(list);
+
+    res.json(shoppingList);
 };
 
-// Get all items in a shopping list
-exports.getItems = (req, res) => {
-    const list = shoppingListDB.find(l => l.listId === req.params.id);
-    if (!list) return res.status(404).json({ error: "Shopping list not found" });
-    res.json(list.items);
+const getShoppingListItems = (req, res) => {
+    const { id } = req.params;
+    const shoppingList = shoppingLists.find(list => list.id === id);
+
+    if (!shoppingList) {
+        return res.status(404).json({ error: "Shopping list not found" });
+    }
+
+    res.json({ items: shoppingList.items });
 };
 
-// Add a new item to a shopping list
-exports.addItem = (req, res) => {
-    const list = shoppingListDB.find(l => l.listId === req.params.id);
-    if (!list) return res.status(404).json({ error: "Shopping list not found" });
-
+const addItemToShoppingList = (req, res) => {
+    const { id } = req.params;
     const { itemName } = req.body;
+    const shoppingList = shoppingLists.find(list => list.id === id);
+
+    if (!shoppingList) {
+        return res.status(404).json({ error: "Shopping list not found" });
+    }
+
     if (!itemName) {
         return res.status(400).json({ error: "Item name is required" });
     }
@@ -74,29 +95,55 @@ exports.addItem = (req, res) => {
     const newItem = {
         itemId: uuidv4(),
         name: itemName,
-        isCompleted: false
+        isResolved: false
     };
-    list.items.push(newItem);
-    res.json(list);
+
+    shoppingList.items.push(newItem);
+    res.status(201).json(newItem);
 };
 
-// Remove an item from a shopping list
-exports.removeItem = (req, res) => {
-    const list = shoppingListDB.find(l => l.listId === req.params.id);
-    if (!list) return res.status(404).json({ error: "Shopping list not found" });
+const removeItemFromShoppingList = (req, res) => {
+    const { id, itemId } = req.params;
+    const shoppingList = shoppingLists.find(list => list.id === id);
 
-    list.items = list.items.filter(item => item.itemId !== req.params.itemId);
-    res.json(list);
+    if (!shoppingList) {
+        return res.status(404).json({ error: "Shopping list not found" });
+    }
+
+    const itemIndex = shoppingList.items.findIndex(item => item.itemId === itemId);
+    if (itemIndex === -1) {
+        return res.status(404).json({ error: "Item not found" });
+    }
+
+    shoppingList.items.splice(itemIndex, 1);
+    res.json({ message: "Item removed successfully" });
 };
 
-// Mark an item as completed
-exports.completeItem = (req, res) => {
-    const list = shoppingListDB.find(l => l.listId === req.params.id);
-    if (!list) return res.status(404).json({ error: "Shopping list not found" });
+const markItemAsCompleted = (req, res) => {
+    const { id, itemId } = req.params;
+    const shoppingList = shoppingLists.find(list => list.id === id);
 
-    const item = list.items.find(item => item.itemId === req.params.itemId);
-    if (!item) return res.status(404).json({ error: "Item not found" });
+    if (!shoppingList) {
+        return res.status(404).json({ error: "Shopping list not found" });
+    }
 
-    item.isCompleted = true;
-    res.json(list);
+    const item = shoppingList.items.find(item => item.itemId === itemId);
+    if (!item) {
+        return res.status(404).json({ error: "Item not found" });
+    }
+
+    item.isResolved = true;
+    res.json(item);
+};
+
+module.exports = {
+    getShoppingLists,
+    createShoppingList,
+    getShoppingListById,
+    deleteShoppingList,
+    inviteUserToShoppingList,
+    getShoppingListItems,
+    addItemToShoppingList,
+    removeItemFromShoppingList,
+    markItemAsCompleted
 };
